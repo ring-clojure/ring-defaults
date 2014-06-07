@@ -39,7 +39,6 @@
                :keywordize true}
    :cookies   true
    :session   {:flash true
-               :store (cookie-store)
                :cookie-attrs {:http-only true}}
    :security  {:anti-forgery   true
                :xss-protection {:enable? true, :mode :block}
