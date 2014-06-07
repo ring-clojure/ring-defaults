@@ -13,7 +13,8 @@
         [ring.middleware.file :only [wrap-file]]
         [ring.middleware.not-modified :only [wrap-not-modified]]
         [ring.middleware.content-type :only [wrap-content-type]]
-        [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]))
+        [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]
+        [ring.middleware.ssl :only [wrap-ssl-redirect wrap-hsts]]))
 
 (def api-defaults
   "A default configuration for a HTTP API."
@@ -23,8 +24,15 @@
              :absolute-redirects     true
              :content-types          true}})
 
+(def secure-api-defaults
+  "A default configuration for a HTTP API that's accessed securely over HTTPS."
+  (-> api-defaults
+      (assoc-in [:security :redirect-ssl] true)
+      (assoc-in [:security :hsts] true)))
+
 (def site-defaults
-  "A default configuration for a browser-accessible web site."
+  "A default configuration for a browser-accessible website, based on current
+  best practice."
   {:params    {:urlencoded true
                :multipart  true
                :nested     true
@@ -42,6 +50,15 @@
    :correct   {:not-modified-responses true
                :absolute-redirects     true
                :content-types          true}})
+
+(def secure-site-defaults
+  "A default configuration for a browser-accessible website that's accessed
+  securely over HTTPS."
+  (-> site-defaults
+      (assoc-in [:session :cookie-attrs :secure] true)
+      (assoc-in [:session :cookie-name] "secure-ring-session")
+      (assoc-in [:security :ssl-redirect] true)
+      (assoc-in [:security :hsts] true)))
 
 (defn- wrap [handler middleware options]
   (if (true? options)
@@ -76,4 +93,6 @@
         (wrap wrap-file               (get-in cfg [:static :files] false))
         (wrap wrap-content-type       (get-in cfg [:correct :content-types] false))
         (wrap wrap-not-modified       (get-in cfg [:correct :not-modified-responses] false))
-        (wrap wrap-x-headers          (:security cfg)))))
+        (wrap wrap-x-headers          (:security cfg))
+        (wrap wrap-hsts               (get-in cfg [:security :hsts] false))
+        (wrap wrap-ssl-redirect       (get-in cfg [:security :ssl-redirect] false)))))
