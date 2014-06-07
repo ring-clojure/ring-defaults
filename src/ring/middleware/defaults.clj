@@ -1,13 +1,18 @@
 (ns ring.middleware.defaults
   (:require [ring.middleware.x-headers :as x])
-  (:use [ring.middleware.keyword-params :only [wrap-keyword-params]]
+  (:use [ring.middleware.flash :only [wrap-flash]]
+        [ring.middleware.session :only [wrap-session]]
+        [ring.middleware.session.cookie :only [cookie-store]]
+        [ring.middleware.keyword-params :only [wrap-keyword-params]]
         [ring.middleware.nested-params :only [wrap-nested-params]]
         [ring.middleware.params :only [wrap-params]]
         [ring.middleware.cookies :only [wrap-cookies]]
         [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]))
 
 (def default-options
-  {:keyword-params true
+  {:flash   true
+   :session {:store (cookie-store), :cookie-attrs {:http-only true}}
+   :keyword-params true
    :nested-params  true
    :params  true
    :cookies true
@@ -30,6 +35,8 @@
   [handler & [{:as options}]]
   (let [opts (merge default-options options)]
     (-> handler
+        (wrap wrap-flash   (:flash opts))
+        (wrap wrap-session (:session opts))
         (wrap wrap-keyword-params (:keyword-params opts))
         (wrap wrap-nested-params  (:nested-params opts))
         (wrap wrap-params  (:params opts))
