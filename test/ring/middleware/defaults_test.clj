@@ -1,7 +1,12 @@
 (ns ring.middleware.defaults-test
   (:use clojure.test
-        ring.middleware.defaults))
+        ring.middleware.defaults
+        [ring.util.response :only [response]]
+        [ring.mock.request :only [request]]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest test-wrap-site-defaults
+  (testing "smoke test"
+    (let [handler (-> (constantly (response "foo"))
+                      (wrap-site-defaults))
+          resp    (handler (request :get "/"))]
+      (is (= resp (response "foo"))))))
