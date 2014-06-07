@@ -7,7 +7,7 @@
 (deftest test-wrap-site-defaults
   (testing "smoke test"
     (let [handler (-> (constantly (response "foo"))
-                      (wrap-site-defaults))
+                      (wrap-defaults site-defaults))
           resp    (handler (request :get "/"))]
       (is (= (:status resp) 200))
       (is (= (:body resp) "foo"))
@@ -25,16 +25,16 @@
         (is (.startsWith set-cookie "ring-session="))
         (is (.contains set-cookie "HttpOnly")))))
 
-  (testing "middleware options"
+  (testing "middleware overrides"
     (let [handler (-> (constantly (response "foo"))
-                      (wrap-site-defaults {:frame-options :deny}))
+                      (wrap-defaults site-defaults {:security {:frame-options :deny}}))
           resp    (handler (request :get "/"))]
       (is (= (get-in resp [:headers "X-Frame-Options"]) "DENY"))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))))
 
   (testing "disabled middleware"
     (let [handler (-> (constantly (response "foo"))
-                      (wrap-site-defaults {:frame-options false}))
+                      (wrap-defaults site-defaults {:security {:frame-options false}}))
           resp    (handler (request :get "/"))]
       (is (nil? (get-in resp [:headers "X-Frame-Options"])))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff")))))
