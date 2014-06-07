@@ -15,6 +15,14 @@
         [ring.middleware.content-type :only [wrap-content-type]]
         [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]))
 
+(def api-defaults
+  "A default configuration for a HTTP API."
+  {:params  {:urlencoded true
+             :keywordize true}
+   :correct {:not-modified-responses true
+             :absolute-redirects     true
+             :content-types          true}})
+
 (def site-defaults
   "A default configuration for a browser-accessible web site."
   {:params    {:urlencoded true

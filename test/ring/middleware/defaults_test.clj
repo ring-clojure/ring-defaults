@@ -4,8 +4,16 @@
         [ring.util.response :only [response]]
         [ring.mock.request :only [request]]))
 
-(deftest test-wrap-site-defaults
-  (testing "smoke test"
+(deftest test-wrap-defaults
+  (testing "api defaults"
+    (let [handler (-> (constantly (response "foo"))
+                      (wrap-defaults api-defaults))
+          resp    (handler (request :get "/"))]
+      (is (= resp {:status 200
+                   :headers {"Content-Type" "application/octet-stream"}
+                   :body "foo"}))))
+
+  (testing "site defaults"
     (let [handler (-> (constantly (response "foo"))
                       (wrap-defaults site-defaults))
           resp    (handler (request :get "/"))]
