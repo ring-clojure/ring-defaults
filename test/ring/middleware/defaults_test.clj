@@ -10,7 +10,9 @@
                       (wrap-site-defaults))
           resp    (handler (request :get "/"))]
       (is (= resp {:status  200
-                   :headers {"X-Frame-Options" "SAMEORIGIN"}
+                   :headers {"X-Frame-Options" "SAMEORIGIN"
+                             "X-Content-Type-Options" "nosniff"
+                             "X-XSS-Protection" "1; mode=block"}
                    :body    "foo"}))))
 
   (testing "middleware options"
@@ -18,11 +20,15 @@
                       (wrap-site-defaults {:frame-options :deny}))
           resp    (handler (request :get "/"))]
       (is (= resp {:status  200
-                   :headers {"X-Frame-Options" "DENY"}
+                   :headers {"X-Frame-Options" "DENY"
+                             "X-Content-Type-Options" "nosniff"
+                             "X-XSS-Protection" "1; mode=block"}
                    :body    "foo"}))))
 
   (testing "disabled middleware"
     (let [handler (-> (constantly (response "foo"))
-                      (wrap-site-defaults {:frame-options false}))
+                      (wrap-site-defaults {:frame-options false
+                                           :content-type-options false
+                                           :xss-protection false}))
           resp    (handler (request :get "/"))]
       (is (= resp (response "foo"))))))
