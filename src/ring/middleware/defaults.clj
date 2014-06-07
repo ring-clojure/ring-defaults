@@ -18,11 +18,11 @@
 
 (def api-defaults
   "A default configuration for a HTTP API."
-  {:params  {:urlencoded true
-             :keywordize true}
-   :correct {:not-modified-responses true
-             :absolute-redirects     true
-             :content-types          true}})
+  {:params    {:urlencoded true
+               :keywordize true}
+   :responses {:not-modified-responses true
+               :absolute-redirects     true
+               :content-types          true}})
 
 (def secure-api-defaults
   "A default configuration for a HTTP API that's accessed securely over HTTPS."
@@ -45,9 +45,8 @@
                :xss-protection {:enable? true, :mode :block}
                :frame-options  :sameorigin
                :content-type-options :nosniff}
-   :static    {:resources "public"
-               :files false}
-   :correct   {:not-modified-responses true
+   :static    {:resources "public"}
+   :responses {:not-modified-responses true
                :absolute-redirects     true
                :content-types          true}})
 
@@ -88,11 +87,11 @@
         (wrap wrap-multipart-params   (get-in cfg [:params :multipart] false))
         (wrap wrap-params             (get-in cfg [:params :urlencoded] false))
         (wrap wrap-cookies            (get-in cfg [:cookies] false))
-        (wrap wrap-absolute-redirects (get-in cfg [:correct :absolute-redirects] false))
+        (wrap wrap-absolute-redirects (get-in cfg [:responses :absolute-redirects] false))
         (wrap wrap-resource           (get-in cfg [:static :resources] false))
         (wrap wrap-file               (get-in cfg [:static :files] false))
-        (wrap wrap-content-type       (get-in cfg [:correct :content-types] false))
-        (wrap wrap-not-modified       (get-in cfg [:correct :not-modified-responses] false))
+        (wrap wrap-content-type       (get-in cfg [:responses :content-types] false))
+        (wrap wrap-not-modified       (get-in cfg [:responses :not-modified-responses] false))
         (wrap wrap-x-headers          (:security cfg))
         (wrap wrap-hsts               (get-in cfg [:security :hsts] false))
         (wrap wrap-ssl-redirect       (get-in cfg [:security :ssl-redirect] false)))))
