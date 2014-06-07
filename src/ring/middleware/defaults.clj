@@ -9,6 +9,8 @@
         [ring.middleware.multipart-params :only [wrap-multipart-params]]
         [ring.middleware.params :only [wrap-params]]
         [ring.middleware.cookies :only [wrap-cookies]]
+        [ring.middleware.not-modified :only [wrap-not-modified]]
+        [ring.middleware.content-type :only [wrap-content-type]]
         [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]))
 
 (def default-options
@@ -21,6 +23,8 @@
    :params  true
    :cookies true
    :absolute-redirects true
+   :not-modified true
+   :content-type true
    :xss-protection {:enable? true, :mode :block}
    :frame-options  :sameorigin
    :content-type-options :nosniff})
@@ -48,6 +52,8 @@
         (wrap wrap-params  (:params opts))
         (wrap wrap-cookies (:cookies opts))
         (wrap wrap-absolute-redirects (:absolute-redirects opts))
-        (wrap wrap-xss-protection     (:xss-protection opts))
-        (wrap x/wrap-frame-options    (:frame-options opts))
+        (wrap wrap-content-type    (:content-type opts))
+        (wrap wrap-not-modified    (:not-modified opts))
+        (wrap wrap-xss-protection  (:xss-protection opts))
+        (wrap x/wrap-frame-options (:frame-options opts))
         (wrap x/wrap-content-type-options (:content-type-options opts)))))
