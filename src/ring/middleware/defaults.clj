@@ -9,9 +9,10 @@
         [ring.middleware.multipart-params :only [wrap-multipart-params]]
         [ring.middleware.params :only [wrap-params]]
         [ring.middleware.cookies :only [wrap-cookies]]
+        [ring.middleware.resource :only [wrap-resource]]
         [ring.middleware.not-modified :only [wrap-not-modified]]
-        [ring.middleware.head :only [wrap-head]]
         [ring.middleware.content-type :only [wrap-content-type]]
+        [ring.middleware.head :only [wrap-head]]
         [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]))
 
 (def default-options
@@ -24,8 +25,9 @@
    :params  true
    :cookies true
    :absolute-redirects true
-   :not-modified true
+   :resource "public"
    :content-type true
+   :not-modified true
    :head false
    :xss-protection {:enable? true, :mode :block}
    :frame-options  :sameorigin
@@ -54,6 +56,7 @@
         (wrap wrap-params  (:params opts))
         (wrap wrap-cookies (:cookies opts))
         (wrap wrap-absolute-redirects (:absolute-redirects opts))
+        (wrap wrap-resource     (:resource opts))
         (wrap wrap-content-type (:content-type opts))
         (wrap wrap-not-modified (:not-modified opts))
         (wrap wrap-head (:head opts))
