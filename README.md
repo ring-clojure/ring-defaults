@@ -55,6 +55,11 @@ customized to suit your needs.
 
 The following configuration keys are supported:
 
+### :proxy
+
+Set to true if the application is running behind a reverse proxy, like
+nginx, or behind a load balancer, like ELB.
+
 ### :params
 
 A map that contains options to parse parameters from the request.

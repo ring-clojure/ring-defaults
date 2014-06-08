@@ -2,7 +2,7 @@
   (:use clojure.test
         ring.middleware.defaults
         [ring.util.response :only [response]]
-        [ring.mock.request :only [request]]))
+        [ring.mock.request :only [request header]]))
 
 (deftest test-wrap-defaults
   (testing "api defaults"
@@ -54,6 +54,14 @@
       (is (= resp {:status 301
                    :headers {"Location" "https://localhost/foo"}
                    :body ""}))))
+
+  (testing "ssl proxy redirect"
+    (let [handler (-> (constantly (response "foo"))
+                      (wrap-defaults secure-site-defaults {:proxy true}))
+          resp    (handler (-> (request :get "/foo")
+                               (header "x-forwarded-proto" "https")))]
+      (is (= (:status resp) 200))
+      (is (= (:body resp) "foo"))))
 
   (testing "secure api defaults"
     (let [handler (-> (constantly (response "foo"))
