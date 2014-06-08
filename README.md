@@ -46,9 +46,12 @@ If you're constructing a secure, SSL-only API:
 ```
 
 These defaults are just configuration maps, and can be customized with
-the keys described in the next section:
+the keys described in the next section.
 
-## Configuration
+## Customizing
+
+The default configurations are just maps of options, and can be
+customized to suit your needs.
 
 The following configuration keys are supported:
 
