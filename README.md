@@ -53,10 +53,37 @@ the keys described in the next section:
 The following configuration keys are supported:
 
 - `:params`
-  - `:urlencoded` - if true, parses URLEncoded parameters
-  - `:multipart`  - if true, parses multipart parameters
-  - `:nested`     - if true, allows for nested parameters
-  - `:keywordize` - if true, turns the parameter keys into keywords
+  - `:urlencoded` - whether to parse URLEncoded parameters
+  - `:multipart`  - whether to parse multipart parameters
+    - `:store` - how to store uploaded files
+    - `:encoding` - the encoding to use
+  - `:nested` - allows for nested parameters
+  - `:keywordize` - turns the parameter keys into keywords
+- `:cookies` - whether to parse cookies
+- `:session`
+  - `:flash` - adds a special flash session that only lasts for one request
+  - `:store` - the session store to use
+  - `:cookie-name` - the cookie name to store the session key in
+  - `:cookie-attrs` - a map of any additional cookie attributes
+- `:security`
+  - `:anti-forgery` - adds CSRF protection to POST, PUT, PATCH and DELETE methods
+  - `:xss-protection` - heuristic XSS detection in the browser
+    - `:enable?` - whether to enable XSS detection
+    - `:mode` - the XSS detection mode (currently only `:block`)
+  - `:frame-options` - may be `:deny`, `:sameorigin` or `{:allow-from url}`
+  - `:content-type-options` - may be false or `:nosniff`
+  - `:ssl-redirect` - redirect HTTP requests to HTTPS
+    - `:ssl-port` - the port to use for the HTTPS URL
+  - `:hsts` - adds Strict-Transport-Security
+    - `:max-age` - the maximum time in seconds the rule applies for
+    - `:include-subdomains?` - true if subdomains are included
+- `:static`
+  - `:resources` - a directory on the classpath to serve static resources from
+  - `:files`     - a directory on disk to serve static resources from
+- `:responses`
+  - `:not-modified-responses` - return 304 Not Modified responses when appropriate
+  - `:absolute-redirects` - turn relative redirect URIs into absolute URLs
+  - `:content-type` - guess the response content type from the URI file extension
 
 ## License
 
