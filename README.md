@@ -17,36 +17,35 @@ Add the following dependency to your `project.clj`:
 
 ## Basic Usage
 
-If you're constructing a website:
+The `wrap-defaults` middleware sets up standard Ring middleware based
+on a supplied configuration:
 
 ```clojure
+(require '[ring.middleware.defaults :refer :all])
+
 (def site
   (wrap-defaults handler site-defaults)
 ```
 
-If you're constructing an API:
+There are four configurations included with the middleware
 
-```clojure
-(def api
-  (wrap-defaults handler api-defaults)
-```
+- `api-defaults`
+- `site-defaults`
+- `secure-api-defaults`
+- `secure-site-defaults`
 
-If you're constructing a secure, SSL-only website:
+The "api" defaults will add support for urlencoded parameters, but not
+much else.
 
-```clojure
-(def secure-site
-  (wrap-defaults handler secure-site-defaults)
-```
+The "site" defaults add support for parameters, cookies, sessions,
+static resources, file uploads, and a bunch of browser-specific
+security headers.
 
-If you're constructing a secure, SSL-only API:
+The "secure" defaults force SSL. Unencrypted HTTP URLs are redirected
+to the equivlant HTTPS URL, and various headers and flags are sent to
+prevent the browser sending sensitive information over insecure
+channels.
 
-```clojure
-(def secure-api
-  (wrap-defaults handler secure-api-defaults)
-```
-
-These defaults are just configuration maps, and can be customized with
-the keys described in the next section.
 
 ## Customizing
 
