@@ -54,167 +54,104 @@ customized to suit your needs.
 
 The following configuration keys are supported:
 
-### :proxy
-
-Set to true if the application is running behind a reverse proxy, like
-nginx, or behind a load balancer, like ELB.
-
-### :params
-
-A map that contains options to parse parameters from the request.
-Parsed parameters are placed in the `:params` key of the request map.
-
-##### :urlencoded
-
-Set to true to parse urlencoded parameters in the query string and the
-request body.
-
-##### :multipart
-
-Set to true to parse multipart parameters in the request body. This
-allows for file uploads from the browser.
-
-A map of multipart options may also be specified:
-
-- `:store`    - a multipart store that determines where to put uploaded files
-- `:encoding` - the character encoding to use for parameters
-
-##### :nested
-
-Set to true to allow nested parameters via a special syntax. For
-instance, an encoded parameter string like:
-
-    user[id]=001&user[name]=alice
-
-Will be converted into a map like:
-
-```clojure
-{:user {:id "001", :name "alice"}}
-```
-
-##### :keywordize
-
-By default the keys in the parameter map are strings. Set this to true
-to turn them into keywords.
-
-
-### :cookies
-
-Set to true to parse cookies from the request. Parsed cookies are
-placed in the `:cookies` key on the request map.
-
-
-### :session
-
-A map that contains options for specifying the session. Sessions are
-placed on the `:session` key on the request map, and can be updated
-via the `:session` key on the response map.
-
-##### :flash
-
-If set to true, an additional `:flash` key is added to the request and
-response maps. This acts like the session, but each item lasts only
-until the next request.
-
-
-##### :store
-
-The session store to use. This structure determines where to keep the
-session data.
-
-##### :cookie-name
-
-The name of the cookie that holds the session key. Defaults to "ring-session".
-
-##### :cookie-attrs
-
-A map of additional attributes, such as `:http-only` or `:secure`, to
-add to the session cookie.
-
-
-### :security
-
-A map of security related behaviors and headers.
-
-##### :anti-forgery
-
-Set to true to turn on CSRF protection. All forms must contain an
-anti-forgery token. See [ring-anti-forgery] for more details.
-
-[ring-anti-forgery]: https://github.com/ring-clojure/ring-anti-forgery
-
-##### :xss-protection
-
-Enable the X-XSS-Protection header that tells supporting browsers to use
-heuristics to detect XSS attacks.
-
-##### :frame-options
-
-Prevent your site from being placed in frames. Accepts the following
-values:
-
-- `:deny`
-- `:sameorigin`
-- `{:allow-from url}`
-
-##### :content-type-options
-
-Prevent attacks based around media type confusion. Can only be set to
-`false` or `:nosniff`.
-
-##### :ssl-redirect
-
-If true, redirect all HTTP requests to the equivalent HTTPS URL.
-
-A map with an `:ssl-port` option may be set instead, if the HTTPS
-server is on a nonstandard port.
-
-##### :hsts
-
-If true, enable HTTP Strict Transport Security. This prevents your
-site from being accessed over HTTP for a set length of time.
-
-A map may also be supplied with the following options:
-
-- `:max-age` - the maximum time in seconds the rule applies for
-- `:include-subdomains?` - true if subdomains are included
-
-
-### :static
-
-A map of options to configure how to find static content.
-
-##### :resources
-
-A string containing a classpath prefix. This will serve any resources
-in locations starting with the supplied prefix.
-
-
-##### :files
-
-A string containing a directory on disk to serve files from. Usually
-the `:resources` option mentioned above is more useful.
-
-
-### :responses
-
-A map of options to augment the responses from your application.
-
-##### :not-modified-responses
-
-If your responses have a `Last-Modified` or `ETag` header, and the
-requesting browser has the response already cached, a 304 Not Modified
-response will be returned instead.
-
-##### :absolute-redirects
-
-Any redirects to relative URLs will be turned into redirects to
-absolute URLs, to better conform to the HTTP spec.
-
-##### :content-type
-
-If true, any response without a content-type will have one added,
-based on the file extension of the request URL.
+- `:cookies` - Set to true to parse cookies from the request.
+
+- `:params` -
+  A map of options that describes how to parse parameters from the
+  request.
+  
+  - `:keywordize` -
+    Set to true to turn the parameter keys into keywords.
+    
+  - `:multipart` -
+    Set to true to parse urlencoded parameters in the query string and
+    the request body, or supply a map of options to pass to the
+    standard Ring [multipart-params][1] middleware.
+
+  - `:nested` -
+    Set to true to allow nested parameters via the standard Ring
+    [nested-params][2] middleware
+
+  - `:urlencoded` -
+    Set to true to parse urlencoded parameters in the query string and
+    the request body.
+
+- `:proxy` -
+  Set to true if the application is running behind a reverse proxy or
+  load balancer.
+
+- `:responses` -
+  A map of options to augment the responses from your application.
+
+  - `:absolute-redirects`
+    Any redirects to relative URLs will be turned into redirects to
+    absolute URLs, to better conform to the HTTP spec.
+
+  - `:content-type`
+    Adds the standard Ring [content-type][3] middleware.
+
+  - `:not-modified-responses`
+    Adds the standard Ring [not-modified][4] middleware.
+
+- `:security` -
+  Options for security related behaviors and headers.
+
+  - `:anti-forgery` -
+    Set to true to add CSRF protection via the [ring-anti-forgery][5]
+    library.
+
+  - `:content-type-options` -
+    Prevents attacks based around media-type confusion. See:
+    [wrap-content-type-options][6].
+
+  - `:frame-options` -
+    Prevents your site from being placed in frames or iframes. See:
+    [wrap-frame-options][7].
+    
+  - `:hsts` -
+    If true, enable HTTP Strict Transport Security. See: [wrap-hsts][8].
+    
+  - `:ssl-redirect` -
+    If true, redirect all HTTP requests to the equivalent HTTPS URL. A
+    map with an `:ssl-port` option may be set instead, if the HTTPS
+    server is on a non-standard port. See: [wrap-ssl-redirect][9].
+
+  - `:xss-protection` -
+    Enable the X-XSS-Protection header that tells supporting browsers
+    to use heuristics to detect XSS attacks. See: [wrap-xss-protection][10].
+
+- `:session` -
+  A map of options for configuring session handling via the Ring
+  [session][11] middleware.
+
+  - `:flash` - If set to true, the Ring [flash][12] middleware is added.
+
+  - `:store` - The Ring session store to use for storing sessions.
+
+- `:static`
+  A map of options to configure how to find static content.
+
+  - `:files` -
+    A string containing a directory on disk to serve files from.
+    Usually the `:resources` option below is more useful.
+  
+  - `:resources` -
+    A string containing a classpath prefix. This will serve any
+    resources in locations starting with the supplied prefix.
+
+
+[1]: https://ring-clojure.github.io/ring/ring.middleware.multipart-params.html
+[2]: https://ring-clojure.github.io/ring/ring.middleware.nested-params.html
+[3]: https://ring-clojure.github.io/ring/ring.middleware.content-type.html
+[4]: https://ring-clojure.github.io/ring/ring.middleware.not-modified.html
+[5]: https://github.com/ring-clojure/ring-anti-forgery
+[6]: https://ring-clojure.github.io/ring-headers/ring.middleware.x-headers.html#var-wrap-content-type-options
+[7]: https://ring-clojure.github.io/ring-headers/ring.middleware.x-headers.html#var-wrap-frame-options
+[8]: https://ring-clojure.github.io/ring-ssl/ring.middleware.ssl.html#var-wrap-hsts
+[9]: https://ring-clojure.github.io/ring-ssl/ring.middleware.ssl.html#var-wrap-ssl-redirect
+[10]: https://ring-clojure.github.io/ring-headers/ring.middleware.x-headers.html#var-wrap-xss-protection
+[11]: https://ring-clojure.github.io/ring/ring.middleware.session.html
+[12]: https://ring-clojure.github.io/ring/ring.middleware.flash.html
 
 
 ## License
