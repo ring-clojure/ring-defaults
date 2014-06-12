@@ -1,5 +1,7 @@
 # Ring-Defaults
 
+[![Build Status](https://secure.travis-ci.org/ring-clojure/ring-defaults.png)](http://travis-ci.org/ring-clojure/ring-defaults)
+
 Knowing what middleware to add to a Ring application, and in what
 order, can be difficult and prone to error.
 
