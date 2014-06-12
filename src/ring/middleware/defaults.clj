@@ -1,4 +1,5 @@
 (ns ring.middleware.defaults
+  "Middleware for providing a handler with sensible defaults."
   (:require [ring.middleware.x-headers :as x])
   (:use [ring.middleware.flash :only [wrap-flash]]
         [ring.middleware.session :only [wrap-session]]
@@ -75,23 +76,29 @@
       (wrap x/wrap-content-type-options (:content-type-options options false))))
 
 (defn wrap-defaults
-  [handler defaults & [overrides]]
-  (let [cfg (merge-with merge defaults overrides)]
-    (-> handler
-        (wrap wrap-flash              (get-in cfg [:session :flash] false))
-        (wrap wrap-anti-forgery       (get-in cfg [:security :anti-forgery] false))
-        (wrap wrap-session            (:session cfg false))
-        (wrap wrap-keyword-params     (get-in cfg [:params :keywordize] false))
-        (wrap wrap-nested-params      (get-in cfg [:params :nested] false))
-        (wrap wrap-multipart-params   (get-in cfg [:params :multipart] false))
-        (wrap wrap-params             (get-in cfg [:params :urlencoded] false))
-        (wrap wrap-cookies            (get-in cfg [:cookies] false))
-        (wrap wrap-absolute-redirects (get-in cfg [:responses :absolute-redirects] false))
-        (wrap wrap-resource           (get-in cfg [:static :resources] false))
-        (wrap wrap-file               (get-in cfg [:static :files] false))
-        (wrap wrap-content-type       (get-in cfg [:responses :content-types] false))
-        (wrap wrap-not-modified       (get-in cfg [:responses :not-modified-responses] false))
-        (wrap wrap-x-headers          (:security cfg))
-        (wrap wrap-hsts               (get-in cfg [:security :hsts] false))
-        (wrap wrap-ssl-redirect       (get-in cfg [:security :ssl-redirect] false))
-        (wrap wrap-forwarded-scheme   (boolean (:proxy cfg))))))
+  "Wraps a handler in default Ring middleware, as specified by the supplied
+  configuration map.
+
+  See: api-defaults
+       site-defaults
+       secure-api-defaults
+       secure-site-defaults"
+  [handler config]
+  (-> handler
+      (wrap wrap-flash            (get-in config [:session :flash] false))
+      (wrap wrap-anti-forgery     (get-in config [:security :anti-forgery] false))
+      (wrap wrap-session          (:session config false))
+      (wrap wrap-keyword-params   (get-in config [:params :keywordize] false))
+      (wrap wrap-nested-params    (get-in config [:params :nested] false))
+      (wrap wrap-multipart-params (get-in config [:params :multipart] false))
+      (wrap wrap-params           (get-in config [:params :urlencoded] false))
+      (wrap wrap-cookies          (get-in config [:cookies] false))
+      (wrap wrap-absolute-redirects (get-in config [:responses :absolute-redirects] false))
+      (wrap wrap-resource         (get-in config [:static :resources] false))
+      (wrap wrap-file             (get-in config [:static :files] false))
+      (wrap wrap-content-type     (get-in config [:responses :content-types] false))
+      (wrap wrap-not-modified     (get-in config [:responses :not-modified-responses] false))
+      (wrap wrap-x-headers        (:security config))
+      (wrap wrap-hsts             (get-in config [:security :hsts] false))
+      (wrap wrap-ssl-redirect     (get-in config [:security :ssl-redirect] false))
+      (wrap wrap-forwarded-scheme (boolean (:proxy config)))))

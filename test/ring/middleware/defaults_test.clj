@@ -35,14 +35,16 @@
 
   (testing "middleware overrides"
     (let [handler (-> (constantly (response "foo"))
-                      (wrap-defaults site-defaults {:security {:frame-options :deny}}))
+                      (wrap-defaults
+                       (assoc-in site-defaults [:security :frame-options] :deny)))
           resp    (handler (request :get "/"))]
       (is (= (get-in resp [:headers "X-Frame-Options"]) "DENY"))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))))
 
   (testing "disabled middleware"
     (let [handler (-> (constantly (response "foo"))
-                      (wrap-defaults site-defaults {:security {:frame-options false}}))
+                      (wrap-defaults
+                       (assoc-in site-defaults [:security :frame-options] false)))
           resp    (handler (request :get "/"))]
       (is (nil? (get-in resp [:headers "X-Frame-Options"])))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))))
@@ -57,7 +59,7 @@
 
   (testing "ssl proxy redirect"
     (let [handler (-> (constantly (response "foo"))
-                      (wrap-defaults secure-site-defaults {:proxy true}))
+                      (wrap-defaults (assoc secure-site-defaults :proxy true)))
           resp    (handler (-> (request :get "/foo")
                                (header "x-forwarded-proto" "https")))]
       (is (= (:status resp) 200))
