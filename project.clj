@@ -10,4 +10,7 @@
                  [ring/ring-anti-forgery "1.0.0"]
                  [javax.servlet/servlet-api "2.5"]]
   :profiles
-  {:dev {:dependencies [[ring-mock "0.1.5"]]}})
+  {:dev {:dependencies [[ring-mock "0.1.5"]]}
+   :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
+   :1.5 {:dependencies [[org.clojure/clojure "1.5.1"]]}
+   :1.6 {:dependencies [[org.clojure/clojure "1.6.0"]]}})
