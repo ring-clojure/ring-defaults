@@ -9,13 +9,11 @@ This library attempts to automate the process, by providing sensible
 and secure default configurations of Ring middleware for both websites
 and HTTP APIs.
 
-**Note:** Ring-Defaults is currently in development and not yet released.
-
 ## Installation
 
 Add the following dependency to your `project.clj`:
 
-    [ring/ring-defaults "0.1.0-SNAPSHOT"]
+    [ring/ring-defaults "0.1.0"]
 
 ## Basic Usage
 
