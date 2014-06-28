@@ -24,7 +24,7 @@ on a supplied configuration:
 (require '[ring.middleware.defaults :refer :all])
 
 (def site
-  (wrap-defaults handler site-defaults)
+  (wrap-defaults handler site-defaults))
 ```
 
 There are four configurations included with the middleware
