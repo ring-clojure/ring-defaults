@@ -28,7 +28,7 @@
 (def secure-api-defaults
   "A default configuration for a HTTP API that's accessed securely over HTTPS."
   (-> api-defaults
-      (assoc-in [:security :redirect-ssl] true)
+      (assoc-in [:security :ssl-redirect] true)
       (assoc-in [:security :hsts] true)))
 
 (def site-defaults
