@@ -49,9 +49,17 @@
       (is (nil? (get-in resp [:headers "X-Frame-Options"])))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))))
 
-  (testing "ssl redirect"
+  (testing "ssl redirect (site)"
     (let [handler (-> (constantly (response "foo"))
                       (wrap-defaults secure-site-defaults))
+          resp    (handler (request :get "/foo"))]
+      (is (= resp {:status 301
+                   :headers {"Location" "https://localhost/foo"}
+                   :body ""}))))
+
+  (testing "ssl redirect (api)"
+    (let [handler (-> (constantly (response "foo"))
+                      (wrap-defaults secure-api-defaults))
           resp    (handler (request :get "/foo"))]
       (is (= resp {:status 301
                    :headers {"Location" "https://localhost/foo"}
