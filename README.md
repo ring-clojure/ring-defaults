@@ -13,7 +13,7 @@ and HTTP APIs.
 
 Add the following dependency to your `project.clj`:
 
-    [ring/ring-defaults "0.1.0"]
+    [ring/ring-defaults "0.1.1"]
 
 ## Basic Usage
 
