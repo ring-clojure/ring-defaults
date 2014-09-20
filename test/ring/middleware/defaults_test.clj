@@ -105,4 +105,13 @@
       (let [set-cookie (first (get-in resp [:headers "Set-Cookie"]))]
         (is (.startsWith set-cookie "secure-ring-session="))
         (is (.contains set-cookie "HttpOnly"))
-        (is (.contains set-cookie "Secure"))))))
+        (is (.contains set-cookie "Secure")))))
+
+  (testing "proxy headers"
+    (let [handler (wrap-defaults response {:proxy true})
+          resp    (handler (-> (request :get "/")
+                               (header "x-forwarded-proto" "https")
+                               (header "x-forwarded-for" "1.2.3.4, 10.0.0.1")))
+          body    (:body resp)]
+      (is (= (:scheme body) :https))
+      (is (= (:remote-addr body) "1.2.3.4")))))

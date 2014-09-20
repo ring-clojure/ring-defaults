@@ -15,7 +15,8 @@
         [ring.middleware.not-modified :only [wrap-not-modified]]
         [ring.middleware.content-type :only [wrap-content-type]]
         [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]
-        [ring.middleware.ssl :only [wrap-ssl-redirect wrap-hsts wrap-forwarded-scheme]]))
+        [ring.middleware.ssl :only [wrap-ssl-redirect wrap-hsts wrap-forwarded-scheme]]
+        [ring.middleware.proxy-headers :only [wrap-forwarded-remote-addr]]))
 
 (def api-defaults
   "A default configuration for a HTTP API."
@@ -101,4 +102,5 @@
       (wrap wrap-x-headers        (:security config))
       (wrap wrap-hsts             (get-in config [:security :hsts] false))
       (wrap wrap-ssl-redirect     (get-in config [:security :ssl-redirect] false))
-      (wrap wrap-forwarded-scheme (boolean (:proxy config)))))
+      (wrap wrap-forwarded-scheme      (boolean (:proxy config)))
+      (wrap wrap-forwarded-remote-addr (boolean (:proxy config)))))
