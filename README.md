@@ -46,6 +46,19 @@ to the equivlant HTTPS URL, and various headers and flags are sent to
 prevent the browser sending sensitive information over insecure
 channels.
 
+## Proxies
+
+If your app is sitting behind a load balancer or reverse proxy, as is
+often the case in cloud-based deployments, you'll want to set `:proxy`
+to `true`:
+
+```clojure
+(assoc secure-site-defaults :proxy true)
+```
+
+This is particularly important when your site is secured with SSL, as
+the SSL redirect middleware will get caught in a redirect loop if it
+can't determine the correct URL scheme of the request.
 
 ## Customizing
 
