@@ -86,8 +86,8 @@
        secure-site-defaults"
   [handler config]
   (-> handler
-      (wrap wrap-flash            (get-in config [:session :flash] false))
       (wrap wrap-anti-forgery     (get-in config [:security :anti-forgery] false))
+      (wrap wrap-flash            (get-in config [:session :flash] false))
       (wrap wrap-session          (:session config false))
       (wrap wrap-keyword-params   (get-in config [:params :keywordize] false))
       (wrap wrap-nested-params    (get-in config [:params :nested] false))
