@@ -3,7 +3,6 @@
   (:require [ring.middleware.x-headers :as x])
   (:use [ring.middleware.flash :only [wrap-flash]]
         [ring.middleware.session :only [wrap-session]]
-        [ring.middleware.session.cookie :only [cookie-store]]
         [ring.middleware.keyword-params :only [wrap-keyword-params]]
         [ring.middleware.nested-params :only [wrap-nested-params]]
         [ring.middleware.anti-forgery :only [wrap-anti-forgery]]
