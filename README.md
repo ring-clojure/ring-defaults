@@ -108,6 +108,9 @@ The following configuration keys are supported:
   - `:content-type`
     Adds the standard Ring [content-type][3] middleware.
 
+  - `:default-charset`
+    Adds a default charset to any text content-type lacking a charset.
+
   - `:not-modified-responses`
     Adds the standard Ring [not-modified][4] middleware.
 
