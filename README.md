@@ -63,7 +63,12 @@ can't determine the correct URL scheme of the request.
 ## Customizing
 
 The default configurations are just maps of options, and can be
-customized to suit your needs.
+customized to suit your needs. For example, if you wanted the normal
+site defaults, but without session support, you could use:
+
+```clojure
+(wrap-defaults handler (assoc site-defaults :session false))
+```
 
 The following configuration keys are supported:
 
