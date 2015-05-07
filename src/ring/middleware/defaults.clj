@@ -13,6 +13,7 @@
         [ring.middleware.file :only [wrap-file]]
         [ring.middleware.not-modified :only [wrap-not-modified]]
         [ring.middleware.content-type :only [wrap-content-type]]
+        [ring.middleware.default-charset :only [wrap-default-charset]]
         [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]
         [ring.middleware.ssl :only [wrap-ssl-redirect wrap-hsts wrap-forwarded-scheme]]
         [ring.middleware.proxy-headers :only [wrap-forwarded-remote-addr]]))
@@ -23,7 +24,8 @@
                :keywordize true}
    :responses {:not-modified-responses true
                :absolute-redirects     true
-               :content-types          true}})
+               :content-types          true
+               :default-charset        "utf-8"}})
 
 (def secure-api-defaults
   "A default configuration for a HTTP API that's accessed securely over HTTPS."
@@ -48,7 +50,8 @@
    :static    {:resources "public"}
    :responses {:not-modified-responses true
                :absolute-redirects     true
-               :content-types          true}})
+               :content-types          true
+               :default-charset        "utf-8"}})
 
 (def secure-site-defaults
   "A default configuration for a browser-accessible website that's accessed
@@ -97,6 +100,7 @@
       (wrap wrap-resource         (get-in config [:static :resources] false))
       (wrap wrap-file             (get-in config [:static :files] false))
       (wrap wrap-content-type     (get-in config [:responses :content-types] false))
+      (wrap wrap-default-charset  (get-in config [:responses :default-charset] false))
       (wrap wrap-not-modified     (get-in config [:responses :not-modified-responses] false))
       (wrap wrap-x-headers        (:security config))
       (wrap wrap-hsts             (get-in config [:security :hsts] false))

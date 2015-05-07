@@ -1,7 +1,7 @@
 (ns ring.middleware.defaults-test
   (:use clojure.test
         ring.middleware.defaults
-        [ring.util.response :only [response]]
+        [ring.util.response :only [response content-type]]
         [ring.mock.request :only [request header]]))
 
 (deftest test-wrap-defaults
@@ -32,6 +32,12 @@
       (let [set-cookie (first (get-in resp [:headers "Set-Cookie"]))]
         (is (.startsWith set-cookie "ring-session="))
         (is (.contains set-cookie "HttpOnly")))))
+
+  (testing "default charset"
+    (let [handler (-> (constantly (-> (response "foo") (content-type "text/plain")))
+                      (wrap-defaults site-defaults))
+          resp    (handler (request :get "/"))]
+      (is (= (get-in resp [:headers "Content-Type"]) "text/plain; charset=utf-8"))))
 
   (testing "middleware overrides"
     (let [handler (-> (constantly (response "foo"))
