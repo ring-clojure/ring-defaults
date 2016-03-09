@@ -117,7 +117,7 @@
     (let [handler (wrap-defaults response {:proxy true})
           resp    (handler (-> (request :get "/")
                                (header "x-forwarded-proto" "https")
-                               (header "x-forwarded-for" "1.2.3.4, 10.0.0.1")))
+                               (header "x-forwarded-for" "10.0.0.1, 1.2.3.4")))
           body    (:body resp)]
       (is (= (:scheme body) :https))
       (is (= (:remote-addr body) "1.2.3.4"))))
