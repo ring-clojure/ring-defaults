@@ -9,6 +9,7 @@
                  [ring/ring-headers "0.2.0"]
                  [ring/ring-anti-forgery "1.0.0"]
                  [javax.servlet/servlet-api "2.5"]]
+  :aliases {"test-all" ["with-profile" "default:+1.6:+1.7:+1.8" "test"]}
   :profiles
   {:dev {:dependencies [[ring/ring-mock "0.3.0"]]}
    :1.6 {:dependencies [[org.clojure/clojure "1.6.0"]]}
