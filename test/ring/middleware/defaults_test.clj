@@ -124,4 +124,15 @@
 
   (testing "nil response"
     (let [handler (wrap-defaults (constantly nil) site-defaults)]
-      (is (nil? (handler (request :get "/")))))))
+      (is (nil? (handler (request :get "/"))))))
+
+  (testing "async handlers"
+    (let [handler (-> (fn [_ respond _] (respond (response "foo")))
+                      (wrap-defaults api-defaults))
+          resp    (promise)
+          ex      (promise)]
+      (handler (request :get "/") resp ex)
+      (is (not (realized? ex)))
+      (is (= @resp {:status 200
+                    :headers {"Content-Type" "application/octet-stream"}
+                    :body "foo"})))))
