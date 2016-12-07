@@ -8,7 +8,7 @@
                  [ring/ring-ssl "0.3.0-beta1"]
                  [ring/ring-headers "0.3.0-beta1"]
                  [ring/ring-anti-forgery "1.1.0-beta1"]
-                 [javax.servlet/servlet-api "2.5"]]
+                 [javax.servlet/javax.servlet-api "3.1.0"]]
   :aliases {"test-all" ["with-profile" "default:+1.6:+1.7:+1.8:+1.9" "test"]}
   :profiles
   {:dev {:dependencies [[ring/ring-mock "0.3.0"]]}
