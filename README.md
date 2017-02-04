@@ -153,12 +153,14 @@ The following configuration keys are supported:
   A map of options to configure how to find static content.
 
   - `:files` -
-    A string containing a directory on disk to serve files from.
-    Usually the `:resources` option below is more useful.
+    A string or collection of strings containing paths to directories
+    to serve files from. Usually the `:resources` option below is
+    more useful.
   
   - `:resources` -
-    A string containing a classpath prefix. This will serve any
-    resources in locations starting with the supplied prefix.
+    A string or collection of strings containing classpath
+    prefixes. This will serve any resources in locations starting with
+    the supplied prefix.
 
 
 [1]: https://ring-clojure.github.io/ring/ring.middleware.multipart-params.html
