@@ -126,6 +126,40 @@
     (let [handler (wrap-defaults (constantly nil) site-defaults)]
       (is (nil? (handler (request :get "/"))))))
 
+  (testing "single resource path"
+    (let [handler (wrap-defaults
+                   (constantly nil)
+                   (assoc-in site-defaults [:static :resources] "ring/assets/public1"))]
+      (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo1\n"))
+      (is (nil? (handler (request :get "/bar.txt"))))))
+
+  (testing "multiple resource paths"
+    (let [handler (wrap-defaults
+                   (constantly nil)
+                   (assoc-in site-defaults
+                             [:static :resources]
+                             ["ring/assets/public1"
+                              "ring/assets/public2"]))]
+      (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo2\n"))
+      (is (= (slurp (:body (handler (request :get "/bar.txt")))) "bar\n"))))
+
+  (testing "single file path"
+    (let [handler (wrap-defaults
+                   (constantly nil)
+                   (assoc-in site-defaults [:static :files] "test/ring/assets/public1"))]
+      (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo1\n"))
+      (is (nil? (handler (request :get "/bar.txt"))))))
+
+  (testing "multiple file paths"
+    (let [handler (wrap-defaults
+                   (constantly nil)
+                   (assoc-in site-defaults
+                             [:static :files]
+                             ["test/ring/assets/public1"
+                              "test/ring/assets/public2"]))]
+      (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo2\n"))
+      (is (= (slurp (:body (handler (request :get "/bar.txt")))) "bar\n"))))
+
   (testing "async handlers"
     (let [handler (-> (fn [_ respond _] (respond (response "foo")))
                       (wrap-defaults api-defaults))
