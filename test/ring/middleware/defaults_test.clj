@@ -1,8 +1,8 @@
 (ns ring.middleware.defaults-test
-  (:use clojure.test
-        ring.middleware.defaults
-        [ring.util.response :only [response content-type]]
-        [ring.mock.request :only [request header]]))
+  (:require [clojure.test :refer :all]
+            [ring.middleware.defaults :refer :all]
+            [ring.util.response :refer [response content-type]]
+            [ring.mock.request :refer [request header]]))
 
 (deftest test-wrap-defaults
   (testing "api defaults"

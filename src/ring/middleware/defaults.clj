@@ -1,22 +1,22 @@
 (ns ring.middleware.defaults
   "Middleware for providing a handler with sensible defaults."
-  (:require [ring.middleware.x-headers :as x])
-  (:use [ring.middleware.flash :only [wrap-flash]]
-        [ring.middleware.session :only [wrap-session]]
-        [ring.middleware.keyword-params :only [wrap-keyword-params]]
-        [ring.middleware.nested-params :only [wrap-nested-params]]
-        [ring.middleware.anti-forgery :only [wrap-anti-forgery]]
-        [ring.middleware.multipart-params :only [wrap-multipart-params]]
-        [ring.middleware.params :only [wrap-params]]
-        [ring.middleware.cookies :only [wrap-cookies]]
-        [ring.middleware.resource :only [wrap-resource]]
-        [ring.middleware.file :only [wrap-file]]
-        [ring.middleware.not-modified :only [wrap-not-modified]]
-        [ring.middleware.content-type :only [wrap-content-type]]
-        [ring.middleware.default-charset :only [wrap-default-charset]]
-        [ring.middleware.absolute-redirects :only [wrap-absolute-redirects]]
-        [ring.middleware.ssl :only [wrap-ssl-redirect wrap-hsts wrap-forwarded-scheme]]
-        [ring.middleware.proxy-headers :only [wrap-forwarded-remote-addr]]))
+  (:require [ring.middleware.x-headers :as x]
+            [ring.middleware.flash :refer [wrap-flash]]
+            [ring.middleware.session :refer [wrap-session]]
+            [ring.middleware.keyword-params :refer [wrap-keyword-params]]
+            [ring.middleware.nested-params :refer [wrap-nested-params]]
+            [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
+            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
+            [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.cookies :refer [wrap-cookies]]
+            [ring.middleware.resource :refer [wrap-resource]]
+            [ring.middleware.file :refer [wrap-file]]
+            [ring.middleware.not-modified :refer [wrap-not-modified]]
+            [ring.middleware.content-type :refer [wrap-content-type]]
+            [ring.middleware.default-charset :refer [wrap-default-charset]]
+            [ring.middleware.absolute-redirects :refer [wrap-absolute-redirects]]
+            [ring.middleware.ssl :refer [wrap-ssl-redirect wrap-hsts wrap-forwarded-scheme]]
+            [ring.middleware.proxy-headers :refer [wrap-forwarded-remote-addr]]))
 
 (def api-defaults
   "A default configuration for a HTTP API."
