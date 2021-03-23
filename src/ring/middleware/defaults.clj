@@ -44,7 +44,7 @@
    :session   {:flash true
                :cookie-attrs {:http-only true, :same-site :strict}}
    :security  {:anti-forgery   true
-               :xss-protection {:enable? true, :mode :block}
+               :xss-protection {:enable? false}
                :frame-options  :sameorigin
                :content-type-options :nosniff}
    :static    {:resources "public"}
@@ -78,7 +78,9 @@
         args))
 
 (defn- wrap-xss-protection [handler options]
-  (x/wrap-xss-protection handler (:enable? options true) (dissoc options :enable?)))
+  (x/wrap-xss-protection handler
+                         (:enable? options false)
+                         (-> options (dissoc :enable?) not-empty)))
 
 (defn- wrap-x-headers [handler options]
   (-> handler
