@@ -27,7 +27,7 @@
                "Set-Cookie"}))
       (is (= (get-in resp [:headers "X-Frame-Options"]) "SAMEORIGIN"))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))
-      (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block"))
+      (is (= (get-in resp [:headers "X-XSS-Protection"]) "0"))
       (is (= (get-in resp [:headers "Content-Type"]) "application/octet-stream"))
       (let [set-cookie (first (get-in resp [:headers "Set-Cookie"]))]
         (is (.startsWith set-cookie "ring-session="))
@@ -105,7 +105,7 @@
                "Set-Cookie"}))
       (is (= (get-in resp [:headers "X-Frame-Options"]) "SAMEORIGIN"))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))
-      (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block"))
+      (is (= (get-in resp [:headers "X-XSS-Protection"]) "0"))
       (is (= (get-in resp [:headers "Strict-Transport-Security"])
              "max-age=31536000; includeSubDomains"))
       (is (= (get-in resp [:headers "Content-Type"]) "application/octet-stream"))

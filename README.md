@@ -138,8 +138,9 @@ The following configuration keys are supported:
     server is on a non-standard port. See: [wrap-ssl-redirect][9].
 
   - `:xss-protection` -
-    Enable the X-XSS-Protection header that tells supporting browsers
-    to use heuristics to detect XSS attacks. See: [wrap-xss-protection][10].
+    **Deprecated.** Enable the X-XSS-Protection header. This is no
+    longer considered best practice by OWASP and should be avoided.
+    See: [wrap-xss-protection][10].
 
 - `:session` -
   A map of options for configuring session handling via the Ring
