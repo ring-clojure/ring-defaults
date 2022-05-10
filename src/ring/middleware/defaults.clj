@@ -23,7 +23,7 @@
   {:params    {:urlencoded true
                :keywordize true}
    :responses {:not-modified-responses true
-               :absolute-redirects     true
+               :absolute-redirects     false
                :content-types          true
                :default-charset        "utf-8"}})
 
@@ -49,7 +49,7 @@
                :content-type-options :nosniff}
    :static    {:resources "public"}
    :responses {:not-modified-responses true
-               :absolute-redirects     true
+               :absolute-redirects     false
                :content-types          true
                :default-charset        "utf-8"}})
 
