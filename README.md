@@ -42,7 +42,7 @@ static resources, file uploads, and a bunch of browser-specific
 security headers.
 
 The "secure" defaults force SSL. Unencrypted HTTP URLs are redirected
-to the equivlant HTTPS URL, and various headers and flags are sent to
+to the equivalent HTTPS URL, and various headers and flags are sent to
 prevent the browser sending sensitive information over insecure
 channels.
 
