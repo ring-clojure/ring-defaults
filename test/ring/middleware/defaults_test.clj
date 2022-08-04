@@ -22,12 +22,10 @@
       (is (= (set (keys (:headers resp)))
              #{"X-Frame-Options"
                "X-Content-Type-Options"
-               "X-XSS-Protection"
                "Content-Type"
                "Set-Cookie"}))
       (is (= (get-in resp [:headers "X-Frame-Options"]) "SAMEORIGIN"))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))
-      (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block"))
       (is (= (get-in resp [:headers "Content-Type"]) "application/octet-stream"))
       (let [set-cookie (first (get-in resp [:headers "Set-Cookie"]))]
         (is (.startsWith set-cookie "ring-session="))
@@ -99,13 +97,11 @@
       (is (= (set (keys (:headers resp)))
              #{"X-Frame-Options"
                "X-Content-Type-Options"
-               "X-XSS-Protection"
                "Strict-Transport-Security"
                "Content-Type"
                "Set-Cookie"}))
       (is (= (get-in resp [:headers "X-Frame-Options"]) "SAMEORIGIN"))
       (is (= (get-in resp [:headers "X-Content-Type-Options"]) "nosniff"))
-      (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block"))
       (is (= (get-in resp [:headers "Strict-Transport-Security"])
              "max-age=31536000; includeSubDomains"))
       (is (= (get-in resp [:headers "Content-Type"]) "application/octet-stream"))
@@ -171,3 +167,13 @@
       (is (= @resp {:status 200
                     :headers {"Content-Type" "application/octet-stream"}
                     :body "foo"})))))
+
+(testing "XSS protection enabled"
+  (let [handler (-> (constantly (response "foo"))
+                    (wrap-defaults
+                     (-> site-defaults
+                         (assoc-in [:security :xss-protection :enable?] true)
+                         (assoc-in [:security :xss-protection :mode] :block))))
+        resp    (handler (request :get "/"))]
+    (is (not (nil? (get-in resp [:headers "X-XSS-Protection"]))))
+    (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block"))))

@@ -138,8 +138,9 @@ The following configuration keys are supported:
     server is on a non-standard port. See: [wrap-ssl-redirect][9].
 
   - `:xss-protection` -
-    Enable the X-XSS-Protection header that tells supporting browsers
-    to use heuristics to detect XSS attacks. See: [wrap-xss-protection][10].
+    **Deprecated** Enable the X-XSS-Protection header. This is [no
+    longer considered best practice][13] and should be avoided.
+    See: [wrap-xss-protection][10].
 
 - `:session` -
   A map of options for configuring session handling via the Ring
@@ -175,6 +176,7 @@ The following configuration keys are supported:
 [10]: https://ring-clojure.github.io/ring-headers/ring.middleware.x-headers.html#var-wrap-xss-protection
 [11]: https://ring-clojure.github.io/ring/ring.middleware.session.html
 [12]: https://ring-clojure.github.io/ring/ring.middleware.flash.html
+[13]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 
 ## License
