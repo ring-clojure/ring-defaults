@@ -179,14 +179,14 @@
       (is (not (realized? ex)))
       (is (= @resp {:status 200
                     :headers {"Content-Type" "application/octet-stream"}
-                    :body "foo"})))))
+                    :body "foo"}))))
 
-(testing "XSS protection enabled"
-  (let [handler (-> (constantly (response "foo"))
-                    (wrap-defaults
-                     (-> site-defaults
-                         (assoc-in [:security :xss-protection :enable?] true)
-                         (assoc-in [:security :xss-protection :mode] :block))))
-        resp    (handler (request :get "/"))]
-    (is (not (nil? (get-in resp [:headers "X-XSS-Protection"]))))
-    (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block"))))
+  (testing "XSS protection enabled"
+    (let [handler (-> (constantly (response "foo"))
+                      (wrap-defaults
+                       (-> site-defaults
+                           (assoc-in [:security :xss-protection :enable?] true)
+                           (assoc-in [:security :xss-protection :mode] :block))))
+          resp    (handler (request :get "/"))]
+      (is (not (nil? (get-in resp [:headers "X-XSS-Protection"]))))
+      (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block")))))
