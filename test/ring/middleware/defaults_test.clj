@@ -31,6 +31,20 @@
         (is (.startsWith set-cookie "ring-session="))
         (is (.contains set-cookie "HttpOnly")))))
 
+  (testing "cookie round trip"
+    (let [handler (-> (fn [{:keys [session]}]
+                        (-> (response (str (:x session 1)))
+                            (assoc :session (update session :x (fnil inc 1)))))
+                      (wrap-defaults site-defaults))
+          resp1   (handler (request :get "/"))]
+      (is (= "1" (:body resp1)))
+      (let [cookie (->> (get-in resp1 [:headers "Set-Cookie"])
+                        (first)
+                        (re-find #"^ring-session=.*?;"))
+            resp2  (handler (-> (request :get "/")
+                                (header "Cookie" cookie)))]
+        (is (= "2" (:body resp2))))))
+
   (testing "default charset"
     (let [handler (-> (constantly (-> (response "foo") (content-type "text/plain")))
                       (wrap-defaults site-defaults))

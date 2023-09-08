@@ -3,6 +3,7 @@
   (:require [ring.middleware.x-headers :as x]
             [ring.middleware.flash :refer [wrap-flash]]
             [ring.middleware.session :refer [wrap-session]]
+            [ring.middleware.session.cookie :refer [cookie-store]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.nested-params :refer [wrap-nested-params]]
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
@@ -17,6 +18,8 @@
             [ring.middleware.absolute-redirects :refer [wrap-absolute-redirects]]
             [ring.middleware.ssl :refer [wrap-ssl-redirect wrap-hsts wrap-forwarded-scheme]]
             [ring.middleware.proxy-headers :refer [wrap-forwarded-remote-addr]]))
+
+(def default-session-store (cookie-store))
 
 (def api-defaults
   "A default configuration for a HTTP API."
@@ -42,7 +45,8 @@
                :keywordize true}
    :cookies   true
    :session   {:flash true
-               :cookie-attrs {:http-only true}}
+               :cookie-attrs {:http-only true}
+               :store default-session-store}
    :security  {:anti-forgery   true
                :frame-options  :sameorigin
                :content-type-options :nosniff}
