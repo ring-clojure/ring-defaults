@@ -29,8 +29,7 @@
       (is (= (get-in resp [:headers "Content-Type"]) "application/octet-stream"))
       (let [set-cookie (first (get-in resp [:headers "Set-Cookie"]))]
         (is (.startsWith set-cookie "ring-session="))
-        (is (.contains set-cookie "HttpOnly"))
-        (is (.contains set-cookie "SameSite=Strict")))))
+        (is (.contains set-cookie "HttpOnly")))))
 
   (testing "default charset"
     (let [handler (-> (constantly (-> (response "foo") (content-type "text/plain")))

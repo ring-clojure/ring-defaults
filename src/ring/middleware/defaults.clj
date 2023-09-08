@@ -42,7 +42,7 @@
                :keywordize true}
    :cookies   true
    :session   {:flash true
-               :cookie-attrs {:http-only true, :same-site :strict}}
+               :cookie-attrs {:http-only true}}
    :security  {:anti-forgery   true
                :frame-options  :sameorigin
                :content-type-options :nosniff}
