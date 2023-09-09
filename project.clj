@@ -1,4 +1,4 @@
-(defproject ring/ring-defaults "0.3.4"
+(defproject ring/ring-defaults "0.4.0"
   :description "Ring middleware that provides sensible defaults"
   :url "https://github.com/ring-clojure/ring-defaults"
   :license {:name "The MIT License"

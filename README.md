@@ -11,11 +11,11 @@ and HTTP APIs.
 
 Add the following dependency to your deps.edn file:
 
-    ring/ring-defaults {:mvn/version "0.3.4"}
+    ring/ring-defaults {:mvn/version "0.4.0"}
 
 Or to your Leiningen project file:
 
-    [ring/ring-defaults "0.3.4"]
+    [ring/ring-defaults "0.4.0"]
 
 ## Basic Usage
 
