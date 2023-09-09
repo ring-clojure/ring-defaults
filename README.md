@@ -75,10 +75,10 @@ The following configuration keys are supported:
 - `:params` -
   A map of options that describes how to parse parameters from the
   request.
-  
+
   - `:keywordize` -
     Set to true to turn the parameter keys into keywords.
-    
+
   - `:multipart` -
     Set to true to parse urlencoded parameters in the query string and
     the request body, or supply a map of options to pass to the
@@ -126,10 +126,10 @@ The following configuration keys are supported:
   - `:frame-options` -
     Prevents your site from being placed in frames or iframes. See:
     [wrap-frame-options][7].
-    
+
   - `:hsts` -
     If true, enable HTTP Strict Transport Security. See: [wrap-hsts][8].
-    
+
   - `:ssl-redirect` -
     If true, redirect all HTTP requests to the equivalent HTTPS URL. A
     map with an `:ssl-port` option may be set instead, if the HTTPS
@@ -155,7 +155,7 @@ The following configuration keys are supported:
     A string or collection of strings containing paths to directories
     to serve files from. Usually the `:resources` option below is
     more useful.
-  
+
   - `:resources` -
     A string or collection of strings containing classpath
     prefixes. This will serve any resources in locations starting with
