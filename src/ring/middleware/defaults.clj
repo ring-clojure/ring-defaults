@@ -72,13 +72,17 @@
       (middleware handler options)
       handler)))
 
-(defn- wrap-multi [handler middleware args]
-  (wrap handler
-        (fn [handler args]
-          (if (coll? args)
-            (reduce middleware handler args)
-            (middleware handler args)))
-        args))
+(defn- wrap-static [handler middleware args]
+  (let [middleware' (fn [handler args]
+                      (if (map? args)
+                        (middleware handler (:root args) (dissoc args :root))
+                        (middleware handler args)))]
+    (wrap handler
+          (fn [handler args]
+            (if (and (coll? args) (not (map? args)))
+              (reduce middleware' handler args)
+              (middleware' handler args)))
+          args)))
 
 (defn- wrap-xss-protection [handler options]
   (x/wrap-xss-protection handler (:enable? options true) (dissoc options :enable?)))
@@ -108,8 +112,8 @@
       (wrap wrap-params           (get-in config [:params :urlencoded] false))
       (wrap wrap-cookies          (get-in config [:cookies] false))
       (wrap wrap-absolute-redirects (get-in config [:responses :absolute-redirects] false))
-      (wrap-multi wrap-resource   (get-in config [:static :resources] false))
-      (wrap-multi wrap-file       (get-in config [:static :files] false))
+      (wrap-static wrap-resource   (get-in config [:static :resources] false))
+      (wrap-static wrap-file       (get-in config [:static :files] false))
       (wrap wrap-content-type     (get-in config [:responses :content-types] false))
       (wrap wrap-default-charset  (get-in config [:responses :default-charset] false))
       (wrap wrap-not-modified     (get-in config [:responses :not-modified-responses] false))

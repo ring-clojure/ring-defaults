@@ -1,7 +1,7 @@
 (ns ring.middleware.defaults-test
   (:require [clojure.test :refer :all]
             [ring.middleware.defaults :refer :all]
-            [ring.util.response :refer [response content-type]]
+            [ring.util.response :refer [response content-type not-found]]
             [ring.mock.request :refer [request header]]))
 
 (deftest test-wrap-defaults
@@ -153,6 +153,32 @@
       (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo2\n"))
       (is (= (slurp (:body (handler (request :get "/bar.txt")))) "bar\n"))))
 
+  (testing "resource paths with options"
+    (let [handler (wrap-defaults
+                   (fn [{:keys [uri]}]
+                     (if (= uri "/foo.txt")
+                       (response "foo-custom")
+                       (not-found "")))
+                   (assoc-in site-defaults [:static :resources]
+                             {:root "ring/assets/public2"
+                              :prefer-handler? true}))]
+      (is (= (:body (handler (request :get "/foo.txt"))) "foo-custom"))
+      (is (= (slurp (:body (handler (request :get "/bar.txt")))) "bar\n"))))
+
+  (testing "multiple resource paths with options"
+    (let [handler (wrap-defaults
+                   (fn [{:keys [uri]}]
+                     (if (= uri "/bar.txt")
+                       (response "bar-custom")
+                       (not-found "")))
+                   (assoc-in site-defaults [:static :resources]
+                             [{:root "ring/assets/public2"
+                               :prefer-handler? true}
+                              {:root "ring/assets/public1"
+                               :prefer-handler? true}]))]
+      (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo2\n"))
+      (is (= (:body (handler (request :get "/bar.txt"))) "bar-custom"))))
+
   (testing "single file path"
     (let [handler (wrap-defaults
                    (constantly nil)
@@ -169,6 +195,32 @@
                               "test/ring/assets/public2"]))]
       (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo2\n"))
       (is (= (slurp (:body (handler (request :get "/bar.txt")))) "bar\n"))))
+
+  (testing "file paths with options"
+    (let [handler (wrap-defaults
+                   (fn [{:keys [uri]}]
+                     (if (= uri "/foo.txt")
+                       (response "foo-custom")
+                       (not-found "")))
+                   (assoc-in site-defaults [:static :files]
+                             {:root "test/ring/assets/public2"
+                              :prefer-handler? true}))]
+      (is (= (:body (handler (request :get "/foo.txt"))) "foo-custom"))
+      (is (= (slurp (:body (handler (request :get "/bar.txt")))) "bar\n"))))
+
+  (testing "multiple file paths with options"
+    (let [handler (wrap-defaults
+                   (fn [{:keys [uri]}]
+                     (if (= uri "/bar.txt")
+                       (response "bar-custom")
+                       (not-found "")))
+                   (assoc-in site-defaults [:static :files]
+                             [{:root "test/ring/assets/public2"
+                               :prefer-handler? true}
+                              {:root "test/ring/assets/public1"
+                               :prefer-handler? true}]))]
+      (is (= (slurp (:body (handler (request :get "/foo.txt")))) "foo2\n"))
+      (is (= (:body (handler (request :get "/bar.txt"))) "bar-custom"))))
 
   (testing "async handlers"
     (let [handler (-> (fn [_ respond _] (respond (response "foo")))

@@ -123,7 +123,7 @@ The following configuration keys are supported:
     Set to true to add CSRF protection via the [ring-anti-forgery][5]
     library.
 
-  - `:content-type-options` -
+  - `:contenta-type-options` -
     Prevents attacks based around media-type confusion. See:
     [wrap-content-type-options][6].
 
@@ -156,14 +156,17 @@ The following configuration keys are supported:
   A map of options to configure how to find static content.
 
   - `:files` -
-    A string or collection of strings containing paths to directories
-    to serve files from. Usually the `:resources` option below is
+    A string or a map of options to be passed to the [file][14]
+    middleware, where the `:root` key is passed as the first argument,
+    and the rest of the map is passed as options. May also be a
+    collection of the above. Usually the `:resources` option below is
     more useful.
 
   - `:resources` -
-    A string or collection of strings containing classpath
-    prefixes. This will serve any resources in locations starting with
-    the supplied prefix.
+    A string or a map of options to be passed to the [resource][15]
+    middleware, where the `:root` key is passed as the first argument,
+    and the rest of the map is passed as options. May also be a
+    collection of the above.
 
 
 [1]: https://ring-clojure.github.io/ring/ring.middleware.multipart-params.html
@@ -179,7 +182,8 @@ The following configuration keys are supported:
 [11]: https://ring-clojure.github.io/ring/ring.middleware.session.html
 [12]: https://ring-clojure.github.io/ring/ring.middleware.flash.html
 [13]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
-
+[14]: https://ring-clojure.github.io/ring/ring.middleware.file.html
+[15]: https://ring-clojure.github.io/ring/ring.middleware.resource.html
 
 ## License
 
