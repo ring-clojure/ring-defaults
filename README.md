@@ -123,7 +123,7 @@ The following configuration keys are supported:
     Set to true to add CSRF protection via the [ring-anti-forgery][5]
     library.
 
-  - `:contenta-type-options` -
+  - `:content-type-options` -
     Prevents attacks based around media-type confusion. See:
     [wrap-content-type-options][6].
 
