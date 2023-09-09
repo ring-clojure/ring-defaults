@@ -1,6 +1,4 @@
-# Ring-Defaults
-
-[![Build Status](https://travis-ci.org/ring-clojure/ring-defaults.svg?branch=master)](https://travis-ci.org/ring-clojure/ring-defaults)
+# Ring-Defaults [![Build Status](https://github.com/ring-clojure/ring-defaults/actions/workflows/test.yml/badge.svg)](https://github.com/ring-clojure/ring-defaults/actions/workflows/test.yml)
 
 Knowing what middleware to add to a Ring application, and in what
 order, can be difficult and prone to error.
