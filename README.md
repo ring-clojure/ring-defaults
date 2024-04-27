@@ -187,6 +187,6 @@ The following configuration keys are supported:
 
 ## License
 
-Copyright © 2023 James Reeves
+Copyright © 2024 James Reeves
 
 Distributed under the MIT License, the same as Ring.
