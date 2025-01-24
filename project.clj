@@ -7,7 +7,8 @@
                  [ring/ring-core "1.13.0"]
                  [ring/ring-ssl "0.4.0"]
                  [ring/ring-headers "0.4.0"]
-                 [ring/ring-anti-forgery "1.4.0"]]
+                 [ring/ring-anti-forgery "1.4.0"]
+                 [org.ring-clojure/ring-websocket-middleware "0.2.1"]]
   :aliases
   {"test-all" ["with-profile" "default:+1.10:+1.11:+1.12" "test"]}
   :profiles

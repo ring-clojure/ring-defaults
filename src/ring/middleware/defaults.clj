@@ -17,7 +17,8 @@
             [ring.middleware.default-charset :refer [wrap-default-charset]]
             [ring.middleware.absolute-redirects :refer [wrap-absolute-redirects]]
             [ring.middleware.ssl :refer [wrap-ssl-redirect wrap-hsts wrap-forwarded-scheme]]
-            [ring.middleware.proxy-headers :refer [wrap-forwarded-remote-addr]]))
+            [ring.middleware.proxy-headers :refer [wrap-forwarded-remote-addr]]
+            [ring.websocket.keepalive :refer [wrap-websocket-keepalive]]))
 
 (def default-session-store (cookie-store))
 
@@ -54,7 +55,8 @@
    :responses {:not-modified-responses true
                :absolute-redirects     false
                :content-types          true
-               :default-charset        "utf-8"}})
+               :default-charset        "utf-8"}
+   :websocket {:keepalive true}})
 
 (def secure-site-defaults
   "A default configuration for a browser-accessible website that's accessed
@@ -103,6 +105,7 @@
        secure-site-defaults"
   [handler config]
   (-> handler
+      (wrap wrap-websocket-keepalive (get-in config [:websocket :keepalive] false))
       (wrap wrap-anti-forgery     (get-in config [:security :anti-forgery] false))
       (wrap wrap-flash            (get-in config [:session :flash] false))
       (wrap wrap-session          (:session config false))

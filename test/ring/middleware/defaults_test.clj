@@ -2,7 +2,9 @@
   (:require [clojure.test :refer :all]
             [ring.middleware.defaults :refer :all]
             [ring.util.response :refer [response content-type not-found]]
-            [ring.mock.request :refer [request header]]))
+            [ring.mock.request :refer [request header]]
+            [ring.websocket :as ws]
+            [ring.websocket.protocols :as wsp]))
 
 (deftest test-wrap-defaults
   (testing "api defaults"
@@ -248,4 +250,22 @@
                       (wrap-defaults site-defaults))]
       (is (= 403 (:status (handler (request :post "/")))))
       (is (= 200 (:status (handler (-> (request :post "/")
-                                       (header "X-Ring-Anti-Forgery" "1")))))))))
+                                       (header "X-Ring-Anti-Forgery" "1"))))))))
+
+  (testing "websocket pings"
+    (let [ping-count (atom 0)
+          socket     (reify wsp/Socket
+                       (-open? [_] true)
+                       (-send [_ _])
+                       (-ping [_ _] (swap! ping-count inc))
+                       (-pong [_ _])
+                       (-close [_ _ _]))
+          response   {::ws/listener {}}
+          handler    (wrap-defaults (constantly response)
+                                    {:websocket {:keepalive {:period 10}}})
+          listener   (::ws/listener (handler {}))]
+      (wsp/on-open listener socket)
+      (Thread/sleep 41)
+      (wsp/on-close listener socket 1000 "")
+      (Thread/sleep 20)
+      (is (= 4 @ping-count)))))

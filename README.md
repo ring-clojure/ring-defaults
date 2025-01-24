@@ -152,7 +152,7 @@ The following configuration keys are supported:
 
   - `:store` - The Ring session store to use for storing sessions.
 
-- `:static`
+- `:static` -
   A map of options to configure how to find static content.
 
   - `:files` -
@@ -167,6 +167,15 @@ The following configuration keys are supported:
     middleware, where the `:root` key is passed as the first argument,
     and the rest of the map is passed as options. May also be a
     collection of the above.
+
+- `:websocket`
+   A map of options to configure websocket behavior.
+
+   - `:keepalive` -
+     If true, periodically pings the client to keep the connection
+     alive via the [websocket keepalive][16] middleware. A map of
+     options may also be passed to set the `:period` of the keepalive in
+     milliseconds.
 
 
 [1]: https://ring-clojure.github.io/ring/ring.middleware.multipart-params.html
@@ -184,6 +193,7 @@ The following configuration keys are supported:
 [13]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 [14]: https://ring-clojure.github.io/ring/ring.middleware.file.html
 [15]: https://ring-clojure.github.io/ring/ring.middleware.resource.html
+[16]: https://ring-clojure.github.io/ring-websocket-middleware/ring.websocket.keepalive.html
 
 ## License
 
