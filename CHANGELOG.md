@@ -1,3 +1,9 @@
+## 0.6.0 (2025-01-24)
+
+* Added websocket-keepalive middleware
+* Added `:safe-header` option to `:anti-forgery` key in `site-defaults`
+* Updated dependencies
+
 ## 0.5.0 (2024-04-27)
 
 * Changed minimum Clojure version to 1.9.0
