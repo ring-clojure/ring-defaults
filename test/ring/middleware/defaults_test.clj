@@ -241,4 +241,11 @@
                            (assoc-in [:security :xss-protection :mode] :block))))
           resp    (handler (request :get "/"))]
       (is (not (nil? (get-in resp [:headers "X-XSS-Protection"]))))
-      (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block")))))
+      (is (= (get-in resp [:headers "X-XSS-Protection"]) "1; mode=block"))))
+
+  (testing "anti-forgery"
+    (let [handler (-> (constantly (response "foo"))
+                      (wrap-defaults site-defaults))]
+      (is (= 403 (:status (handler (request :post "/")))))
+      (is (= 200 (:status (handler (-> (request :post "/")
+                                       (header "X-Ring-Anti-Forgery" "1")))))))))

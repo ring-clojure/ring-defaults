@@ -121,7 +121,7 @@ The following configuration keys are supported:
 
   - `:anti-forgery` -
     Set to true to add CSRF protection via the [ring-anti-forgery][5]
-    library.
+    library, or supply a map of options to be passed to the middleware.
 
   - `:content-type-options` -
     Prevents attacks based around media-type confusion. See:

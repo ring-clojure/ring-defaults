@@ -47,7 +47,7 @@
    :session   {:flash true
                :cookie-attrs {:http-only true}
                :store default-session-store}
-   :security  {:anti-forgery   true
+   :security  {:anti-forgery   {:safe-header "X-Ring-Anti-Forgery"}
                :frame-options  :sameorigin
                :content-type-options :nosniff}
    :static    {:resources "public"}
