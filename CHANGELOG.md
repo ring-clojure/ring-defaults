@@ -1,3 +1,8 @@
+## 0.7.0 (2025-09-13)
+
+* Added content-length middleware
+* Updated dependencies
+
 ## 0.6.0 (2025-01-24)
 
 * Added websocket-keepalive middleware
