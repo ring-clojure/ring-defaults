@@ -268,4 +268,21 @@
       (Thread/sleep 41)
       (wsp/on-close listener socket 1000 "")
       (Thread/sleep 20)
-      (is (= 4 @ping-count)))))
+      (is (= 4 @ping-count))))
+
+  (testing "content-length"
+    (let [handler (-> (constantly
+                       (-> (response "foobar")
+                           (content-type "text/plain; charset=UTF-8")))
+                      (wrap-defaults api-defaults))
+          resp    (handler (request :get "/"))]
+      (is (= resp {:status 200
+                   :headers {"Content-Type"   "text/plain; charset=UTF-8"
+                             "Content-Length" "6"}
+                   :body "foobar"})))
+    (let [handler (-> (constantly
+                       (-> (response "foobar")
+                           (content-type "text/plain; charset=UTF-8")))
+                      (wrap-defaults site-defaults))
+          resp    (handler (request :get "/"))]
+      (is (= "6" (get-in resp [:headers "Content-Length"]))))))

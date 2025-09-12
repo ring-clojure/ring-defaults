@@ -13,6 +13,7 @@
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file :refer [wrap-file]]
             [ring.middleware.not-modified :refer [wrap-not-modified]]
+            [ring.middleware.content-length :refer [wrap-content-length]]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.default-charset :refer [wrap-default-charset]]
             [ring.middleware.absolute-redirects :refer [wrap-absolute-redirects]]
@@ -28,6 +29,7 @@
                :keywordize true}
    :responses {:not-modified-responses true
                :absolute-redirects     false
+               :content-length         true
                :content-types          true
                :default-charset        "utf-8"}})
 
@@ -54,6 +56,7 @@
    :static    {:resources "public"}
    :responses {:not-modified-responses true
                :absolute-redirects     false
+               :content-length         true
                :content-types          true
                :default-charset        "utf-8"}
    :websocket {:keepalive true}})
@@ -120,6 +123,7 @@
       (wrap wrap-content-type     (get-in config [:responses :content-types] false))
       (wrap wrap-default-charset  (get-in config [:responses :default-charset] false))
       (wrap wrap-not-modified     (get-in config [:responses :not-modified-responses] false))
+      (wrap wrap-content-length   (get-in config [:responses :content-length] false))
       (wrap wrap-x-headers        (:security config))
       (wrap wrap-hsts             (get-in config [:security :hsts] false))
       (wrap wrap-ssl-redirect     (get-in config [:security :ssl-redirect] false))

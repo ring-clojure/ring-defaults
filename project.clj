@@ -4,7 +4,7 @@
   :license {:name "The MIT License"
             :url  "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [ring/ring-core "1.15.0"]
+                 [ring/ring-core "1.15.1"]
                  [ring/ring-ssl "0.4.0"]
                  [ring/ring-headers "0.4.0"]
                  [ring/ring-anti-forgery "1.4.0"]
