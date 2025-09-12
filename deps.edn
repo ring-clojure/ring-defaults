@@ -1,5 +1,5 @@
 {:deps {org.clojure/clojure {:mvn/version "1.9.0"}
-        ring/ring-core {:mvn/version "1.13.0"}
+        ring/ring-core {:mvn/version "1.15.0"}
         ring/ring-ssl {:mvn/version "0.4.0"}
         ring/ring-headers {:mvn/version "0.4.0"}
         ring/ring-anti-forgery {:mvn/version "1.4.0"}
