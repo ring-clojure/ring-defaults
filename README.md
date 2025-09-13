@@ -107,7 +107,7 @@ The following configuration keys are supported:
     Any redirects to relative URLs will be turned into redirects to
     absolute URLs, to better conform to the HTTP spec.
 
-  - `:conent-length` -
+  - `:content-length` -
     Adds the standard Ring [content-length][17] middleware.
 
   - `:content-types` -
