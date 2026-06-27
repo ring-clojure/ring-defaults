@@ -1,3 +1,7 @@
+## 0.7.1 (2026-06-27)
+
+* Updated dependencies
+
 ## 0.7.0 (2025-09-13)
 
 * Added content-length middleware
