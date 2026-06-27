@@ -4,7 +4,7 @@
   :license {:name "The MIT License"
             :url  "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [ring/ring-core "1.15.1"]
+                 [ring/ring-core "1.15.5"]
                  [ring/ring-ssl "0.4.0"]
                  [ring/ring-headers "0.4.0"]
                  [ring/ring-anti-forgery "1.4.0"]
@@ -15,4 +15,4 @@
   {:dev  {:dependencies [[ring/ring-mock "0.6.2"]]}
    :1.10 {:dependencies [[org.clojure/clojure "1.10.3"]]}
    :1.11 {:dependencies [[org.clojure/clojure "1.11.4"]]}
-   :1.12 {:dependencies [[org.clojure/clojure "1.12.2"]]}})
+   :1.12 {:dependencies [[org.clojure/clojure "1.12.5"]]}})
